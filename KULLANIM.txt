@@ -1,0 +1,59 @@
+LOVE PANEL 3.0 - KULLANIM
+
+NASIL ÇALIŞTIRILIR
+1. ZIP'i bir klasöre çıkar (sürükleyip açmak yerine "Tümünü ayıkla" kullan).
+2. admin.html dosyasına çift tıkla. Chrome veya Edge önerilir.
+3. Kurulum, sunucu, internet bağlantısı veya hesap gerekmez. JSZip paketin içinde (vendor/).
+Not: Klasör yapısını bozma (admin.html, assets, site-src, vendor birlikte kalmalı).
+
+SİPARİŞ HAZIRLAMA
+1. Çift bilgileri: isimler, ilişki başlangıç tarihi (zorunlu), tanışma tarihi (isteğe bağlı).
+2. Yazılar: açılış ekranı (kapatılabilir), ana başlık, özel mesaj, albüm başlığı, sayfa sonu.
+3. Renkler: ana renk + ikincil renk (seçici veya HEX kodu) ya da 5 hazır palet; Koyu/Açık arka plan.
+4. Kalp efektleri: aç/kapat, renk (ana / ikincil / beyaz), yoğunluk.
+5. Anılar tasarımı: 5 tasarım kartından birini seç (Kayan yıldızlar, Mandallı fotoğraflar,
+   Anı defteri, Polaroid duvarı, Cam kartlar). Önizleme otomatik albüme kayar.
+6. Fotoğraflar: ekle (çoklu / sürükle-bırak), her birine açıklama yaz, ↑ ↓ veya sürükleyerek sırala, sil.
+   Büyük fotoğraflar otomatik küçültülür (kapatılabilir). HEIC desteklenmez, JPG/PNG/WebP kullan.
+7. Müzik: MP3 yükle, şarkı adı yaz. "Müzik oynatıcıyı kullan" kapalıysa sitede müzik olmaz.
+   Tarayıcı kuralı gereği müzik açılış butonuna dokunulunca başlar.
+8. Sağdaki canlı önizlemede Masaüstü / Telefon arasında geçiş yap. Önizleme gerçek site ile
+   aynı kodu çalıştırır. Albüm boşken önizlemede örnek görseller görünür; gerçek siteye girmez.
+9. "Web Sitesini Oluştur ve İndir" -> ISIM1-ISIM2-site.zip iner.
+
+MÜŞTERİYE TESLİM EDİLEN ZIP
+index.html, css/style.css, js/config.js, js/main.js, photos/, music/, images/ (kapak), OKU-BENI.txt
+- ZIP açılınca index.html doğrudan çalışır; internet gerekmez; panele bağlı değildir.
+- Yayınlamak için tüm dosya ve klasörleri aynı yapıyla hosting alanına yükle.
+- Yazı tipleri cihazdaki sistem el yazısı fontlarıdır (Windows: Segoe Script, Apple: Snell Roundhand,
+  Android: cursive). Cihaza göre hafif farklı görünebilir; tasarım bozulmaz.
+
+VARSAYILAN TASARIMA DÖN
+Üstteki düğme tüm yazı, renk, kalp ve anı ayarlarını başlangıç değerine döndürür.
+İstersen fotoğraf/müzik/kapak da temizlenir. Ayarların kendisi (fotoğraflar hariç) tarayıcıda
+otomatik saklanır; sayfayı yenileyince metin ve renkler korunur, fotoğraflar yeniden eklenir.
+
+YENİ HTML ŞABLONU EKLEME
+"Yeni HTML şablonu ekle" ile .html seç. Şablon bu yer tutucuları kullanabilir (hepsi isteğe bağlı):
+  2.0'dan: {{PAGE_TITLE}} {{INTRO_TITLE}} {{INTRO_SUB}} {{NAMES}} {{HERO_TITLE}} {{HERO_TEXT}}
+           {{ALBUM_TITLE}} {{FOOTER_TEXT}} {{START_DATE}} {{HERO_IMAGE}} {{MUSIC_SRC}}
+           {{TALK_BLOCK}} {{PHOTOS_HTML}}
+  3.0 yeni: {{NAME1}} {{NAME2}} {{MET_DATE}} {{SONG_NAME}} {{PRIMARY}} {{SECONDARY}}
+           {{THEME_CSS}}     -> <head> içine koy; --p --s --bg --bg2 --tx --ac ... CSS değişkenlerini verir
+           {{MEMORY_CLASS}}  -> sınıf olarak kullan (mem-stars, mem-polaroid ...)
+           {{HEARTS_BLOCK}}  -> </body> öncesine koy; kalp efektini ekler
+- Tanınmayan yer tutucu varsa şablon reddedilir ve hata bildirimi çıkar.
+- Özel şablonlar bu tarayıcıda saklanır; 2.0'da eklediklerin otomatik taşınır. HTML dosyanı ayrıca sakla.
+- Örnek: ornek-sablonlar/sablon-2.0-romantik-yildizlar.html (Google Fonts kullanır; internet gerektirir).
+
+KOD YAPISI (geliştirmek için)
+admin.html            panel arayüzü
+assets/panel.css      panel stili (+ tasarım kartı mini önizlemeleri)
+assets/panel.js       panel mantığı: durum, önizleme, fotoğraf/müzik, ZIP
+assets/site-bundle.js site-src dosyalarının gömülü kopyası (OTOMATİK ÜRETİLİR)
+site-src/site.css     üretilen sitenin stili, 5 anı tasarımı
+site-src/site.js      üretilen sitenin motoru (config.js verisinden çizer)
+site-src/hearts.js    kalp efekti motoru
+araclar/build-site-bundle.js   site-src'yi düzenlersen çalıştır: node araclar/build-site-bundle.js
+Yeni anı tasarımı eklemek: site.css'e ".mem-ADI" bölümü ekle, panel.js'te MEMORIES listesine yaz,
+panel.css'e ".mini-ADI" kartı ekle.

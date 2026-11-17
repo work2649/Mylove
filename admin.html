@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14131c">
+<title>Love Panel 3.0</title>
+<link rel="stylesheet" href="assets/panel.css">
+</head>
+<body data-view="edit">
+
+<header class="top">
+  <div class="brand"><span class="mark">♥</span><div><b>Love Panel</b><small>3.0 · yerel site hazırlayıcı</small></div></div>
+  <div class="top-actions">
+    <button type="button" class="btn ghost" id="resetBtn"><span class="long">Varsayılan tasarıma dön</span><span class="short">Sıfırla</span></button>
+    <button type="button" class="btn primary js-export"><span class="long">Web Sitesini Oluştur ve İndir</span><span class="short">İndir</span></button>
+  </div>
+</header>
+<div class="progress" id="progress" hidden><div></div></div>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+
+<div class="layout">
+  <aside class="editor" id="editor">
+
+    <details class="card" open>
+      <summary>Şablon</summary>
+      <label for="templateSelect">Site şablonu</label>
+      <select id="templateSelect"></select>
+      <div class="row">
+        <button type="button" class="btn soft" id="addTemplate">＋ Yeni HTML şablonu ekle</button>
+        <button type="button" class="btn soft" id="removeTemplate">Seçiliyi sil</button>
+      </div>
+      <input id="templateFile" type="file" accept=".html,.htm,text/html" hidden>
+      <p class="hint" id="tplNote"></p>
+    </details>
+
+    <details class="card" open>
+      <summary>Çift bilgileri</summary>
+      <div class="grid2">
+        <div><label for="name1">Birinci isim</label><input id="name1" data-k="name1" maxlength="40" autocomplete="off"></div>
+        <div><label for="name2">İkinci isim</label><input id="name2" data-k="name2" maxlength="40" autocomplete="off"></div>
+        <div><label for="startDate">İlişki başlangıç tarihi</label><input id="startDate" data-k="startDate" type="date"></div>
+        <div><label for="metDate">Tanışma tarihi <em>(isteğe bağlı)</em></label><input id="metDate" data-k="metDate" type="date"></div>
+      </div>
+      <label class="check"><input type="checkbox" data-k="showMet"> Tanışma günü sayacını göster (tarih girildiyse)</label>
+      <label for="pageTitle">Sayfa başlığı <em>(tarayıcı sekmesi)</em></label>
+      <input id="pageTitle" data-k="pageTitle" maxlength="80">
+    </details>
+
+    <details class="card" open>
+      <summary>Yazılar</summary>
+      <label class="check"><input type="checkbox" data-k="introEnabled"> Açılış ekranı olsun</label>
+      <div id="introFields" class="sub">
+        <label for="introTitle">Açılış başlığı</label><input id="introTitle" data-k="introTitle" maxlength="90">
+        <div class="grid2">
+          <div><label for="introSub">Açılış alt yazısı</label><input id="introSub" data-k="introSub" maxlength="90"></div>
+          <div><label for="introButton">Buton yazısı</label><input id="introButton" data-k="introButton" maxlength="20"></div>
+        </div>
+      </div>
+      <label for="heroTitle">Ana sayfa başlığı</label><input id="heroTitle" data-k="heroTitle" maxlength="120">
+      <label for="heroText">Özel mesaj</label><textarea id="heroText" data-k="heroText" maxlength="600" placeholder="İstediğin özel mesajı yaz…"></textarea>
+      <label for="metText">Tanışma tarihi mesajı <em>(isteğe bağlı)</em></label><input id="metText" data-k="metText" maxlength="120" placeholder="Örn. Hayatımı güzelleştirdiğin gün…">
+      <div class="grid2">
+        <div><label for="albumTitle">Albüm başlığı</label><input id="albumTitle" data-k="albumTitle" maxlength="60"></div>
+        <div><label for="footerText">Sayfa sonu mesajı</label><input id="footerText" data-k="footerText" maxlength="120"></div>
+      </div>
+    </details>
+
+    <details class="card" open>
+      <summary>Renkler ve tema</summary>
+      <div class="colors">
+        <div class="color">
+          <label for="hPrimary">Ana renk</label>
+          <div class="cpick"><input type="color" id="cPrimary" aria-label="Ana renk seçici"><input id="hPrimary" class="hex" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Ana renk HEX kodu"></div>
+        </div>
+        <div class="color">
+          <label for="hSecondary">İkincil renk</label>
+          <div class="cpick"><input type="color" id="cSecondary" aria-label="İkincil renk seçici"><input id="hSecondary" class="hex" maxlength="7" spellcheck="false" autocomplete="off" aria-label="İkincil renk HEX kodu"></div>
+        </div>
+      </div>
+      <label>Hazır paletler</label>
+      <div class="presets" id="presets"></div>
+      <label>Arka plan</label>
+      <div class="seg" data-k="mode"><button type="button" data-v="dark">Koyu</button><button type="button" data-v="light">Açık</button></div>
+      <p class="hint">Ana renk butonlara ve vurgulara, ikincil renk başlıklara, kartlara ve arka plan tonlarına uygulanır. Sonuç anında önizlemede görünür.</p>
+    </details>
+
+    <details class="card" open>
+      <summary>Kalp efektleri</summary>
+      <label class="check big"><input type="checkbox" data-k="hearts"> Yükselen kalp animasyonu</label>
+      <div id="heartOpts" class="sub">
+        <label>Kalp rengi</label>
+        <div class="seg" data-k="heartColor"><button type="button" data-v="primary">Ana renk</button><button type="button" data-v="secondary">İkincil renk</button><button type="button" data-v="white">Beyaz</button></div>
+        <label>Yoğunluk</label>
+        <div class="seg" data-k="heartDensity"><button type="button" data-v="low">Az</button><button type="button" data-v="mid">Orta</button><button type="button" data-v="high">Çok</button></div>
+        <p class="hint">Küçük, yavaş ve saydam kalpler; mobilde otomatik azalır, sekme gizliyken durur.</p>
+      </div>
+    </details>
+
+    <details class="card" open id="designCards">
+      <summary>Anılar tasarımı</summary>
+      <div class="memgrid" id="memGrid" role="radiogroup" aria-label="Anılar tasarımı"></div>
+    </details>
+
+    <details class="card" open>
+      <summary>Fotoğraf albümü</summary>
+      <div class="drop" id="photoDrop">
+        <label class="filebtn btn soft" for="photoInput">＋ Fotoğraf ekle</label>
+        <input id="photoInput" type="file" accept="image/*" multiple hidden>
+        <span>veya buraya sürükle-bırak</span>
+      </div>
+      <label class="check"><input type="checkbox" data-k="optimize"> Büyük fotoğrafları otomatik küçült (önerilir; site hızlı açılır)</label>
+      <p class="hint" id="photoStat"></p>
+      <div id="photoList" class="plist"></div>
+    </details>
+
+    <details class="card" open>
+      <summary>Müzik ve kapak</summary>
+      <label class="check"><input type="checkbox" data-k="musicEnabled"> Müzik oynatıcıyı kullan</label>
+      <div id="musicOpts" class="sub">
+        <label for="musicFile">Şarkı dosyası (MP3)</label>
+        <div class="row"><input id="musicFile" type="file" accept="audio/*,.mp3"><button type="button" class="btn soft" id="removeMusic" hidden>Kaldır</button></div>
+        <p class="hint" id="musicInfo"></p>
+        <label for="songName">Şarkı adı</label><input id="songName" data-k="songName" maxlength="80" placeholder="Oynatıcıda görünecek ad">
+        <label class="check"><input type="checkbox" data-k="musicAutoplay"> Açılış butonuna basılınca otomatik başlasın</label>
+      </div>
+      <label for="heroFile">Ana ekran arka plan fotoğrafı <em>(isteğe bağlı)</em></label>
+      <div class="row"><input id="heroFile" type="file" accept="image/*"><button type="button" class="btn soft" id="removeHero" hidden>Kaldır</button></div>
+      <p class="hint" id="heroInfo"></p>
+    </details>
+
+    <div class="cta-card">
+      <button type="button" class="btn primary wide js-export">Web Sitesini Oluştur ve İndir</button>
+      <p class="hint">ZIP içinde index.html, css, js, photos ve music klasörleri bulunur. Açınca index.html doğrudan çalışır.</p>
+    </div>
+  </aside>
+
+  <section class="stage" id="stage" aria-label="Canlı önizleme">
+    <div class="stage-bar">
+      <div class="seg" id="deviceSeg"><button type="button" data-v="desktop" aria-pressed="true">Masaüstü</button><button type="button" data-v="mobile" aria-pressed="false">Telefon</button></div>
+      <div class="stage-tools"><button type="button" class="btn soft sm" id="showIntro">Açılışı göster</button><button type="button" class="btn soft sm" id="toAlbum">Albüme git</button></div>
+    </div>
+    <div class="stage-view" id="stageView">
+      <div class="device desktop" id="device"><iframe id="frame" title="Site önizlemesi"></iframe></div>
+    </div>
+  </section>
+  <div class="sheetbar" id="sheetBar" hidden><strong id="sheetTitle"></strong><button type="button" id="sheetClose" aria-label="Kapat">Bitti</button></div>
+</div>
+
+<nav class="tabs" id="tabs" aria-label="Bölümler"></nav>
+
+<div id="toasts" aria-live="polite"></div>
+
+<dialog id="resetDlg">
+  <form method="dialog">
+    <h3>Varsayılan tasarıma dön?</h3>
+    <p>Tüm yazılar, renkler, kalp ve anı tasarımı ayarları başlangıç değerlerine döner.</p>
+    <label class="check"><input type="checkbox" id="clearMedia"> Eklenen fotoğraf, müzik ve kapağı da temizle</label>
+    <div class="row end"><button class="btn soft" value="cancel">Vazgeç</button><button class="btn primary" value="ok">Sıfırla</button></div>
+  </form>
+</dialog>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="assets/site-bundle.js"></script>
+<script src="site-src/hearts.js"></script>
+<script src="site-src/site.js"></script>
+<script src="assets/panel.js"></script>
+</body>
+</html>
